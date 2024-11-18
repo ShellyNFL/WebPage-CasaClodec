@@ -1,7 +1,7 @@
 /*CONTENEDOR CARRUSEL*/
 .carousel-container {
     max-width: 1000px; /* Cambia este valor para ajustar el ancho del carrusel */
-    width: 100%; /* Asegura que sea responsivo */
+    width: 100%;
     margin: 20px auto;
   }
   /*IMAGENES CARRUSEL*/
@@ -22,4 +22,38 @@
     padding: 10px 15px;
   }
   
-  
+/* IMÁGENES DEL CATÁLOGO */
+.fixed-image {
+    height: 200px; /* Altura fija para todas las imágenes */
+    object-fit: cover; /* Recorta las imágenes para llenar el espacio sin deformarse */
+    width: 100%; /* Asegura que ocupen el ancho completo de la tarjeta */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Asegurar que todas las tarjetas tengan la misma altura */
+.row-cols-1 .col, 
+.row-cols-md-3 .col {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    border-radius: 10px;
+    flex: 1; /* Todas las tarjetas tendrán la misma altura */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye contenido de forma uniforme */
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #555;
+}

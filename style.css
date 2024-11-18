@@ -1,0 +1,25 @@
+/*CONTENEDOR CARRUSEL*/
+.carousel-container {
+    max-width: 1000px; /* Cambia este valor para ajustar el ancho del carrusel */
+    width: 100%; /* Asegura que sea responsivo */
+    margin: 20px auto;
+  }
+  /*IMAGENES CARRUSEL*/
+  .carousel-image {
+    height: 600px; /* Cambia según el alto deseado */
+    object-fit: cover; /* Escala las imágenes para que se vean correctamente */
+  }
+  
+  
+  /* Navbar personalizado */
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  
+  

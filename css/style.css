@@ -1,0 +1,51 @@
+/*------------------------CARRUSEL--------------------------*/
+/*CONTENEDOR CARRUSEL*/
+.carousel-container {
+  max-width: 1000px; /*establezco el ancho max*/
+  width: 100%; /*Ocupa todo el ancho que le indique arriba*/
+  margin: 20px auto; /* Centrado */
+}
+/*IMAGENES CARRUSEL*/
+  .carousel-image {
+    height: 600px;
+    object-fit: cover; /*permite cubrir todo el espacio con la img*/
+  }
+/*-------------------------------------------------------------*/
+
+  /*NAVBAR*/
+  .navbar-brand {
+    font-size: 20px;
+    font-weight: bold; 
+  }
+  .nav-link {
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+
+  /* Fondo con degradado */
+.login-body {
+  background: linear-gradient(135deg, #6c63ff, #3b3b98);
+  color: #ffffff;
+}
+
+/* Tarjeta del formulario */
+.login-card {
+  border-radius: 15px;
+  max-width: 400px;
+  width: 100%;
+  background: #ffffff;
+  color: #333333;
+}
+[data-bs-theme='light']{
+  --bg-body-color: #3b3b98;
+  --text-color: white;
+
+}
+
+body{
+  background-color: var(--bg-body-color);
+  color : var(--text-color);
+}
+
+
+

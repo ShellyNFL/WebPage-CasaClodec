@@ -1,9 +1,61 @@
+<?php
+  include("conexion.php");
+  $mensaje = '';
+  $tipoMensaje = '';
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
+      $fechaNacimiento = mysqli_real_escape_string($conexion, $_POST['fechaNacimiento']);
+      $numeroTarjeta = mysqli_real_escape_string($conexion, $_POST['numeroTarjeta']);
+      $direccion = mysqli_real_escape_string($conexion, $_POST['direccion']);
+      $email = mysqli_real_escape_string($conexion, $_POST['email']);
+      $password = mysqli_real_escape_string($conexion, $_POST['password']);
+      $password2 = mysqli_real_escape_string($conexion, $_POST['password2']);
+
+      // Verificar que las contraseñas coincidan
+      if ($password != $password2) {
+          $mensaje = "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.";
+          $tipoMensaje = "danger";
+      } else {
+          // Verificar si el correo ya está registrado
+          $query = "SELECT * FROM usuarios WHERE email = '$email';";
+          $result = mysqli_query($conexion, $query);
+
+          if (mysqli_num_rows($result) > 0) {
+              // El correo ya existe
+              $mensaje = "Correo ya registrado. Intenta con uno nuevo.";
+              $tipoMensaje = "danger";
+          } else {
+              // Insertar al nuevo usuario
+              $query = "INSERT INTO usuarios(nombre, email, password, fechaNacimiento, numeroTarjeta, direccion)
+                        VALUES ('$nombre', '$email', '$password', '$fechaNacimiento', '$numeroTarjeta', '$direccion')";
+              
+              if (mysqli_query($conexion, $query)) {
+                $mensaje = "¡Usuario registrado con éxito! Espera para ser redirigido e iniciar sesión";
+                $tipoMensaje = "success";
+                //se espera 3 seg para redirigir
+                echo "<script>
+                    setTimeout(function() {
+                        window.location.href = 'login.php';
+                    }, 3000);
+                </script>";
+              }else {
+                $mensaje = "Error al registrar usuario: " . mysqli_error($conexion);
+                $tipoMensaje = "danger";
+            }   
+          }
+      }
+  }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro - Casa Clodec</title>
+  <link rel="stylesheet" href="../css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!--íconos Bootstrap-->
   <link rel="stylesheet" href="css/style.css">
@@ -12,36 +64,33 @@
   <!-- NavBar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-        <a class="navbar-brand active" href="index.html">Casa Clodec</a>
+        <a class="navbar-brand active" href="../index.php">Casa Clodec</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#aretes">Pendientes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#anillos">Anillos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#dijes">Dijes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#juegos">Juegos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#pulseras">Pulseras</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#collares">Cadenas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login.php"><i class="bi bi-person"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#cart"><i class="bi bi-cart"></i></a>
-            </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#aretes">Pendientes</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#anillos">Anillos</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#dijes">Dijes</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#juegos">Juegos</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#pulseras">Pulseras</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#collares">Cadenas</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="login.php"><i class="bi bi-person"></i></a>
+              </li>
             </ul>
         </div>
         </div>
@@ -50,6 +99,13 @@
   <!-- Formulario de Registro -->
   <div class="container pt-5 mt-5 d-flex justify-content-center align-items-center">
     <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+      <!-- Mensaje -->
+      <?php if (!empty($mensaje)): ?>
+        <div class="alert alert-<?php echo $tipoMensaje; ?> alert-dismissible fade show" role="alert">
+          <?php echo $mensaje; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif; ?>
       <h1 class="text-center mb-4">Regístrate</h1>
       <form action="registro.php" method="post">
         <!-- Campo de nombre -->
@@ -105,42 +161,7 @@
       </form>
     </div>
   </div>
-
-  <?php
-    include("php/conexion.php");
-    //sustituye los caracteres especiales en ASCII 
-    $nombre= mysqli_real_escape_String($conexion, $_POST['nombre']);
-    $fechaNacimiento = mysqli_real_escape_String($conexion, $_POST['fechaNacimiento']);
-    $numeroTarjeta = mysqli_real_escape_String($conexion, $_POST['numeroTarjeta']);
-    $direccion = mysqli_real_escape_String($conexion, $_POST['direccion']);
-    $email = mysqli_real_escape_String($conexion, $_POST['email']);
-    $password = mysqli_real_escape_String($conexion, $_POST['password']);
-    $password2 = mysqli_real_escape_String($conexion, $_POST['password2']);
-    $mensaje = '';
-    $tipoMensaje = '';
-    if ($password != $password2) 
-        $errorMessage = "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.";
-    if (!empty($errorMessage)) { //si hay msj de error
-        echo '<div class="alert alert-danger" role="alert">' . $errorMessage . '</div>';
-        exit();
-    }
-    $query = "INSERT INTO usuarios(nombre, email, password, fechaNacimiento,numeroTarjeta,direccion) 
-    VALUES ('$nombre','$email','$password','$fechaNacimiento','$numeroTarjeta','$direccion');";
-    if (mysqli_query($conexion, $query)) {
-      $mensaje = "¡Usuario registrado con éxito!";
-      $tipoMensaje = "success";
-    } else {
-      $mensaje = "Error al registrar usuario: " . mysqli_error($conexion);
-      $tipoMensaje = "danger";
-    }
-    if (!empty($mensaje)) {
-      echo '<div class="alert alert-' . $tipoMensaje . ' alert-dismissible fade show" role="alert">
-              ' . $mensaje . '
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
-  ?>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

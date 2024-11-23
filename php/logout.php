@@ -1,6 +1,6 @@
 <?php
-session_start(); // Inicia la sesión
-session_unset(); // Limpia todas las variables de sesión
-session_destroy(); // Destruye la sesión
-header("Location: index.php"); // Redirige al usuario al index
+session_start();//se inicia sesión
+session_unset();//limpia todas las variables de la sesión
+session_destroy();//destruye la sesión
+header("Location: ../index.php");//redirigimos al index
 exit();

@@ -1,7 +1,9 @@
 <?php
-include("php/conexion.php");
 session_start();
-/*echo "<pre>";
+include("php/conexion.php");
+
+/*echo "<br><br>";
+  echo "<pre>";
   print_r($_SESSION);
   echo "</pre>";*/
 // Manejo del carrito
@@ -19,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
         $_SESSION['carrito'][$id_producto] = 1;
   }
 ?>
-  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
   <link rel="stylesheet" href="css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!--íconos Bootstrap-->
-  
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="50" class="scrollspy-example"> <!--agrego el scrollspy-->
 <!-- Navbar -->
@@ -47,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
                 <li class="nav-item"><a class="nav-link" href="#juegos">Juegos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#pulseras">Pulseras</a></li>
                 <li class="nav-item"><a class="nav-link" href="#collares">Cadenas</a></li>
-
                 <?php if (!empty($_SESSION['usuario_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,10 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
                             ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
-                            <li><a class="dropdown-item" href="compras.php">Historial de Compras</a></li>
+                            <li><a class="dropdown-item" href="php/compras.php">Historial de Compras</a></li>
                             <li>
-                                <!--Agrego badge a la opción del carrito de compras -->
-                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="carrito.php">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="php/carrito.php">
                                     Carrito de Compras
                                     <?php if (!empty($_SESSION['carrito'])): ?>
                                         <span class="badge bg-danger ms-2">
@@ -69,12 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
                                     <?php endif; ?>
                                 </a>
                             </li>
-                            <li><a class="dropdown-item" href="informacion.php">Información de la Cuenta</a></li>
+                            <li><a class="dropdown-item" href="php/informacion.php">Información de la Cuenta</a></li>
                             <li><a class="dropdown-item" href="php/logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 <?php else: ?>
-                    <!-- Enlace de inicio de sesión -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="php/login.php">
                             <i class="bi bi-person me-2"></i> Ingresa
@@ -85,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_carrito'])) {
         </div>
     </div>
 </nav>
-
 <!-- Carousel Container -->
 <div class="carousel-container mt-5 pt-3 mx-auto">
   <div id="homecarousel" class="carousel slide" data-bs-ride="carousel">

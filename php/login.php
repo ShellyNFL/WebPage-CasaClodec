@@ -18,6 +18,7 @@
               $_SESSION['usuario_id'] = $usuario['IDusuario'];
               $_SESSION['usuario_nombre'] = $usuario['nombre'];
               $_SESSION['usuario_email'] = $usuario['email'];
+              $_SESSION['usuario_rol'] = $usuario['rol']; //puede ser usuario o admin
               $mensaje = "Bienvenido. Espera un momento, serás direccionado";
               $tipoMensaje = "success";
               //Espera 3 seg para redirigir

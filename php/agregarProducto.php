@@ -2,18 +2,21 @@
 session_start();
 include("conexion.php");
 
-//Verificar si el usuario es administrador
+// Verificar si el usuario es administrador
 if (empty($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
-//Consultar categorías para llenar el select
+// Inicializar mensaje
+$mensaje = '';
+$tipoMensaje = '';
+
+// Consultar categorías para llenar el select
 $sql_categorias = "SELECT * FROM categorias";
 $categorias_resultado = $conexion->query($sql_categorias);
 
-//Manejar agregar productos a la db
-$mensaje = "";
+// Manejar la adición de productos
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_categoria = $_POST['id_categoria'];
     $nombre = $_POST['nombre'];
@@ -28,9 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("isssii", $id_categoria, $nombre, $descripcion, $fotoURL, $precio, $cantidad);
 
     if ($stmt->execute()) {
-        $mensaje = "<div class='alert alert-success'>Producto agregado exitosamente.</div>";
+        $mensaje = "Producto agregado exitosamente.";
+        $tipoMensaje = "success";
     } else {
-        $mensaje = "<div class='alert alert-danger'>Error al agregar el producto. Por favor, inténtelo nuevamente.</div>";
+        $mensaje = "Error al agregar el producto. Por favor, inténtelo nuevamente.";
+        $tipoMensaje = "danger";
     }
 
     $stmt->close();
@@ -45,20 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Agregar Producto</title>
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!--íconos Bootstrap-->
 </head>
 <body>
     <!-- Navbar -->
     <?php include 'navbar.php'; ?>
 
-    <div class="container mt-5 pt-5">
-        <h1 class="mb-4">Agregar Nuevo Producto</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4 pt-5">Agregar Nuevo Producto</h1>
 
-        <!--Mostrar mensajes de éxito o error-->
+        <!-- Mostrar mensajes de éxito o error -->
         <?php if (!empty($mensaje)): ?>
-            <?php echo $mensaje; ?>
+            <div class="alert alert-<?php echo $tipoMensaje; ?> alert-dismissible fade show" role="alert">
+                <?php echo $mensaje; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
 
-        <!--Formulario de agregar producto-->
+        <!--Formulario de Agregar Producto -->
         <form method="POST" class="card shadow p-4">
             <div class="mb-3">
                 <label for="id_categoria" class="form-label">Categoría</label>
@@ -73,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre del producto</label>
+                <label for="nombre" class="form-label">Nombre del Producto</label>
                 <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej: Anillo de Plata" maxlength="50" required>
             </div>
 
@@ -83,22 +92,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="mb-3">
-                <label for="fotoURL" class="form-label">URL de su foto</label>
-                <input type="url" name="fotoURL" id="fotoURL" class="form-control" placeholder="Ej: ../assets/nombreimg.extension" maxlength="255" required>
+                <label for="fotoURL" class="form-label">URL de la Foto</label>
+                <input type="text" name="fotoURL" id="fotoURL" class="form-control" placeholder="Ej: assets/anillo.jpg" maxlength="255" required>
             </div>
 
             <div class="mb-3">
-                <label for="precio" class="form-label">Precio(MXN)</label>
-                <input type="number" name="precio" id="precio" class="form-control" placeholder="Ej: 1500.00" min="1" required>
+                <label for="precio" class="form-label">Precio (MXN)</label>
+                <input type="number" name="precio" id="precio" class="form-control" placeholder="Ej: 1500" min="1" required>
             </div>
 
             <div class="mb-3">
-                <label for="cantidad" class="form-label">Cantidad en almacén</label>
-                <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Ej: 5" min="1" required>
+                <label for="cantidad" class="form-label">Cantidad en Almacén</label>
+                <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Ej: 50" min="1" required>
             </div>
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success">Agregar producto</button>
-                <a href="../index.php" class="btn btn-danger btn-md">Cancelar</a>  
+                <button type="submit" class="btn btn-primary">Agregar Producto</button>
             </div>
             
         </form>
@@ -107,3 +115,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

@@ -1,6 +1,10 @@
 <?php
 session_start();
 include("conexion.php");
+include("itemsCarritoCompras.php");
+
+//Calcular la cantidad del carrito
+$cantidadCarrito = obtenerCantidadCarrito();
 
 // Verifica si el usuario está logueado
 if (empty($_SESSION['usuario_id'])) {
@@ -65,14 +69,13 @@ $stmt->close();
 
     <div class="container mt-5">
         <h1 class="mb-5 pt-5">Historial de Compras</h1>
-
         <?php if (empty($compras)): ?>
             <p class="text-muted">No tienes compras registradas.</p>
         <?php else: ?>
             <?php foreach ($compras as $id_compra => $compra): ?>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <strong>Compra #<?php echo $id_compra; ?></strong>
+                        <!--<strong>Compra #<?php //echo $id_compra; ?></strong>-->
                         <span class="text-muted float-end"><?php echo date("d/m/Y H:i", strtotime($compra['fecha'])); ?></span>
                     </div>
                     <div class="card-body">
@@ -94,8 +97,7 @@ $stmt->close();
         <?php endif; ?>
     </div>
     <div class="text-center mt-4">
-        <!--Botón para ir a la página principal -->
-        <a href="../index.php" class="btn btn-success btn-md">
+        <a href="../index.php#pendientes" class="btn btn-success btn-md">
             <i class="bi bi-cart"></i> Ir a Comprar
         </a>
     </div>

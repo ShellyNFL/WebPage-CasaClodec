@@ -1,6 +1,11 @@
 <?php
 session_start();
 include("conexion.php");
+include("itemsCarritoCompras.php");
+
+//Calcular la cantidad del carrito
+$cantidadCarrito = obtenerCantidadCarrito();
+
 $mensaje = '';
 $tipoMensaje = '';
 //ver si esta logeado algún usuario

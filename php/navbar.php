@@ -6,12 +6,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#aretes">Pendientes</a></li>
-                <li class="nav-item"><a class="nav-link" href="#anillos">Anillos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#dijes">Dijes</a></li>
-                <li class="nav-item"><a class="nav-link" href="#juegos">Juegos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#pulseras">Pulseras</a></li>
-                <li class="nav-item"><a class="nav-link" href="#collares">Cadenas</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#pendientes">Pendientes</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#anillos">Anillos</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#dijes">Dijes</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#juegos">Juegos</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#pulseras">Pulseras</a></li>
+                <li class="nav-item"><a class="nav-link" href="../index.php#cadenas">Cadenas</a></li>
 
                 <?php if (!empty($_SESSION['usuario_id'])): ?>
                     <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
@@ -22,8 +22,8 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
                                 <li><a class="dropdown-item" href="inventario.php">Reporte de inventario</a></li>
-                                <li><a class="dropdown-item" href="agregarProducto.php">Agregar productos nuevos</a></li>
-                                <li><a class="dropdown-item" href="modificarProducto.php">Modificar productos</a></li>
+                                <li><a class="dropdown-item" href="agregarProducto.php">Agregar producto nuevo</a></li>
+                                <li><a class="dropdown-item" href="inventario.php">Modificar productos</a></li>
                                 <li><a class="dropdown-item" href="historialCompras.php">Historial de compras</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
                             </ul>
@@ -38,19 +38,17 @@
                                 ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
-                                <li><a class="dropdown-item" href="php/compras.php">Historial de Compras</a></li>
-                                <li>
-                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="php/carrito.php">
-                                        Carrito de Compras
-                                        <?php if (!empty($_SESSION['carrito'])): ?>
-                                            <span class="badge bg-danger ms-2">
-                                                <?php echo array_sum($_SESSION['carrito']); ?>
-                                            </span>
+                                <li><a class="dropdown-item" href="compras.php">Historial de compras</a></li>
+                                <li> 
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="carrito.php">
+                                        Carrito de compras
+                                        <?php if ($cantidadCarrito > 0): ?>
+                                            <span class="badge bg-danger ms-2"><?php echo $cantidadCarrito; ?></span>
                                         <?php endif; ?>
                                     </a>
                                 </li>
-                                <li><a class="dropdown-item" href="informacion.php">Información de la Cuenta</a></li>
-                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="informacion.php">Información de la cuenta</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar sesión</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>

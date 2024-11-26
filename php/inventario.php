@@ -204,7 +204,6 @@ while ($fila = $categorias_resultado->fetch_assoc()) {
                 hiddenInput.value = input.value;
                 form.appendChild(hiddenInput);
             });
-
             document.body.appendChild(form);
             form.submit();
         }

@@ -1,14 +1,10 @@
 <?php
 session_start();
+include("conexion.php");
 include("itemsCarritoCompras.php");
 
 // Calcular la cantidad del carrito
 $cantidadCarrito = obtenerCantidadCarrito();
-
-if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
-    echo "<div class='container mt-5 text-center'><div class='alert alert-warning'>El carrito está vacío.</div></div>";
-    exit;
-}
 
 // Eliminar producto del carrito
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eliminar_producto'])) {
@@ -65,7 +61,7 @@ $total_compra = 0;
     <div class="container mt-5 pt-5">
         <h1 class="mb-4">Carrito de Compras</h1>
         <?php if (empty($_SESSION['carrito']) || count($_SESSION['carrito']) === 0): ?>
-            <div class="alert alert-warning text-center" role="alert">
+            <div class="alert alert-info text-center" role="alert">
                 <h4 class="alert-heading">¡Tu carrito está vacío!</h4>
                 <p>Parece que aún no has agregado productos a tu carrito. Navega por nuestro catálogo y encuentra lo que necesitas.</p>
                 <hr>
@@ -74,7 +70,7 @@ $total_compra = 0;
                 </a>
             </div>
         <?php else: ?>
-            <!-- Tabla de productos en el carrito -->
+            <!--Tabla de productos en el carrito -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-dark">
@@ -128,7 +124,7 @@ $total_compra = 0;
                 </table>
             </div>
 
-            <!-- Total de la compra y acciones -->
+            <!--Total de la compra y acciones -->
             <div class="row mt-4">
                 <div class="col-md-6">
                     <h4>Total de la Compra:</h4>

@@ -70,7 +70,7 @@ $stmt->close();
     <div class="container mt-5">
         <h1 class="mb-5 pt-5">Historial de Compras</h1>
         <?php if (empty($compras)): ?>
-            <p class="text-muted">No tienes compras registradas.</p>
+            <p class="alert alert-info text-center">No tienes compras registradas.</p>
         <?php else: ?>
             <?php foreach ($compras as $id_compra => $compra): ?>
                 <div class="card mb-4">

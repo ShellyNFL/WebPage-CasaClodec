@@ -14,10 +14,10 @@ function obtenerInventarioProducto($id_producto) {
     $stmt->bind_param("i", $id_producto);
     $stmt->execute();
     $result = $stmt->get_result();
-    $producto = $result->fetch_assoc();
+    $producto = $result->fetch_assoc();//regresa renglón de resultado
     $stmt->close();
 
     //Retorna la cantidad en inventario, o 0 si no se encuentra el producto
     return $producto ? $producto['cantidadAlmacen'] : 0;
 }
-
+?>

@@ -4,21 +4,25 @@
 
     // Manejo del carrito
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_carrito'])) {
+        if (empty($_SESSION['usuario_id'])){ //no logeado
+            header("Location: php/login.php");
+            exit(); 
+        }
         $id_producto = $_POST['id_producto'];
         $nombre_producto = $_POST['nombre_producto'];
         $precio_producto = $_POST['precio_producto'];
 
         // Si no hay carrito, se crea.
-        if (!isset($_SESSION['carrito'])) {
+        if (!isset($_SESSION['carrito'])) { //variable definida y no null
             $_SESSION['carrito'] = [];
         }
 
         // Incrementa la cantidad si el producto ya está en el carrito.
-        if (isset($_SESSION['carrito'][$id_producto])) {
+        if (isset($_SESSION['carrito'][$id_producto]))
             $_SESSION['carrito'][$id_producto]['cantidad']++;
-        } else {
+        else {
             // Agrega el producto si no está en el carrito.
-            $_SESSION['carrito'][$id_producto] = [
+            $_SESSION['carrito'][$id_producto] = [ //array asociativo
                 'cantidad' => 1,
                 'nombre' => $nombre_producto,
                 'precio' => $precio_producto
@@ -36,8 +40,9 @@
   <link rel="stylesheet" href="css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!--íconos Bootstrap-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="50">
+<body data-bs-spy="scroll" data-bs-target=".navbarNav" data-bs-offset="50">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
@@ -47,12 +52,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#pendientes">Pendientes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#anillos">Anillos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#dijes">Dijes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#juegos">Juegos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#pulseras">Pulseras</a></li>
                     <li class="nav-item"><a class="nav-link" href="#cadenas">Cadenas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dijes">Dijes</a></li>    
+                    <li class="nav-item"><a class="nav-link" href="#juegos">Juegos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pendientes">Pendientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pulseras">Pulseras</a></li>
+                    <li class="nav-item"><a class="nav-link" href="php/aboutUs.php">About us</a></li>
+                    
 
                     <?php if (!empty($_SESSION['usuario_id'])): ?>
                         <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
@@ -66,6 +73,7 @@
                                     <li><a class="dropdown-item" href="php/agregarProducto.php">Agregar producto nuevo</a></li>
                                     <li><a class="dropdown-item" href="php/inventario.php">Modificar productos</a></li>
                                     <li><a class="dropdown-item" href="php/historialCompras.php">Historial de compras</a></li>
+                                    <li><a class="dropdown-item" href="php/informacion.php">Información de la Cuenta</a></li>
                                     <li><a class="dropdown-item" href="php/logout.php">Cerrar Sesión</a></li>
                                 </ul>
                             </li>
@@ -80,7 +88,6 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                                     <li><a class="dropdown-item" href="php/compras.php">Historial de Compras</a></li>
-                                    
                                     <li>
                                         <a class="dropdown-item d-flex justify-content-between align-items-center" href="php/carrito.php">
                                             Carrito de Compras
@@ -97,7 +104,7 @@
                             </li>
                         <?php endif; ?>
                     <?php else: ?>
-                        <!--Menú para visitantes-->
+                        <!--Menú para visitantes no registrados-->
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="php/login.php">
                                 <i class="bi bi-person me-2"></i> Ingresa
@@ -157,9 +164,9 @@
                     categorias.nombre AS categoria
                 FROM productos
                 JOIN categorias ON productos.IDcategoria = categorias.IDcategoria
-                ORDER BY FIELD(categorias.nombre, 'pendientes', 'anillos', 'dijes', 'juegos', 'pulseras', 'cadenas');";
+                ORDER BY categorias.nombre;";
             $result = mysqli_query($conexion, $query);
-            $categoria_actual = null;
+            $categoria_actual = 0;
             while ($producto = mysqli_fetch_assoc($result)): 
                 if ($categoria_actual !== strtolower($producto['categoria'])):
                     if ($categoria_actual !== null) {
@@ -171,6 +178,11 @@
             <!-- Nueva categoría -->
             <section id="<?php echo $categoria_actual; ?>">
                 <h2 class="text-center my-4 text-uppercase"><?php echo ucfirst($categoria_actual); ?></h2>
+                <script>
+                    var categoriaActual = <?php echo json_encode($categoria_actual); ?>;
+                    console.log(categoriaActual);
+                </script>
+
                 <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php endif; ?>
         <!-- Producto -->
@@ -197,27 +209,16 @@
                         <input type="hidden" name="nombre_producto" value="<?php echo htmlspecialchars($producto['producto']); ?>">
                         <input type="hidden" name="precio_producto" value="<?php echo htmlspecialchars($producto['precio']); ?>">
                         <button type="submit" name="agregar_carrito" class="btn btn-primary" 
-                            <?php echo $producto['cantidadAlmacen'] == 0 ? 'disabled' : ''; ?>>
+                            <?php echo $producto['cantidadAlmacen'] == 0 ? 'disabled' : ''; ?>> <!--Si no hay en almacen no habilites el carrito de compra-->
                             <i class="bi bi-cart me-2"></i> Agregar al carrito
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-
         <?php endwhile; ?>
                 </div> <!-- Cierra la última fila -->
             </section>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            new bootstrap.ScrollSpy(document.body, {
-                target: '#navbarNav',
-                offset: 50
-            });
-        });
-    </script>
     </body>
 </html>

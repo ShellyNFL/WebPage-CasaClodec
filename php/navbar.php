@@ -6,13 +6,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="../index.php#pendientes">Pendientes</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php#anillos">Anillos</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php#dijes">Dijes</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php#juegos">Juegos</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php#pulseras">Pulseras</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php#cadenas">Cadenas</a></li>
-
+                    <li class="nav-item"><a class="nav-link" href="../index.php#anillos">Anillos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#cadenas">Cadenas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#dijes">Dijes</a></li>    
+                    <li class="nav-item"><a class="nav-link" href="../index.php#juegos">Juegos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#pendientes">Pendientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.php#pulseras">Pulseras</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutUs.php">About us</a></li>
                 <?php if (!empty($_SESSION['usuario_id'])): ?>
                     <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
                         <!--Menú para administradores-->
@@ -25,6 +25,7 @@
                                 <li><a class="dropdown-item" href="agregarProducto.php">Agregar producto nuevo</a></li>
                                 <li><a class="dropdown-item" href="inventario.php">Modificar productos</a></li>
                                 <li><a class="dropdown-item" href="historialCompras.php">Historial de compras</a></li>
+                                <li><a class="dropdown-item" href="informacion.php">Información de la cuenta</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
                             </ul>
                         </li>

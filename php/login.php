@@ -75,10 +75,23 @@
         </div>
         <div class="text-center mt-3">
           <p>¿No tienes cuenta? <a href="registro.php">Regístrate aquí</a></p>
+          <p><a href="#" id="forgotPasswordLink">Olvidé mi contraseña</a></p>
+          <div class="alert alert-info alert-dismissible fade show d-none" id="forgotPasswordMessage" role="alert">
+            Contáctate con el administrador para restablecer tu contraseña: <strong>adminrestablececontra@gmail.com</strong>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
         </div>
       </form>
     </div>
   </div>
+  <script>
+    document.getElementById('forgotPasswordLink').addEventListener('click', function (e) {
+      e.preventDefault(); //Evita la redirección
+      const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
+      forgotPasswordMessage.classList.remove('d-none'); //Muestra la alerta
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
